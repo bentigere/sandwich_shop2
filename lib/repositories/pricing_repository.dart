@@ -15,4 +15,9 @@ class PricingRepository {
     if (quantity <= 0) return 0.0;
     return quantity * pricePerItem(isFootlong: isFootlong);
   }
+
+  /// Calculates the total price for the order based on quantity and sandwich type.
+  double calculateOrderTotal({required int quantity, required bool isFootlong}) {
+    return calculateTotal(quantity: quantity, isFootlong: isFootlong);
+  }
 }

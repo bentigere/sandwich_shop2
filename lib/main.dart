@@ -89,6 +89,12 @@ class _OrderScreenState extends State<OrderScreen> {
     return entries;
   }
 
+  double get totalPrice {
+    return _orderRepository.quantity > 0
+        ? _orderRepository.calculateOrderTotal(quantity: _orderRepository.quantity, isFootlong: _isFootlong)
+        : 0.0;
+  }
+
   @override
   Widget build(BuildContext context) {
     String sandwichType = 'footlong';
@@ -162,6 +168,11 @@ class _OrderScreenState extends State<OrderScreen> {
                   labelText: 'Add a note (e.g., no onions)',
                 ),
               ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Total Price: £${totalPrice.toStringAsFixed(2)}', // Display total price
+              style: normalText,
             ),
             const SizedBox(height: 20),
             Row(

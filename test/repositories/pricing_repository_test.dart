@@ -3,7 +3,7 @@ import 'package:sandwich_shop/repositories/pricing_repository.dart';
 
 void main() {
   group('PricingRepository', () {
-    final repository = const PricingRepository();
+    const repository = PricingRepository();
 
     test('returns correct unit price for six-inch', () {
       expect(repository.pricePerItem(isFootlong: false), 7.0);

@@ -20,4 +20,14 @@ class OrderRepository {
       _quantity--;
     }
   }
+
+  /// Calculates the total price for the order based on quantity and sandwich type.
+  double calculateOrderTotal({required int quantity, required bool isFootlong}) {
+    final PricingRepository pricingRepository = PricingRepository();
+    return pricingRepository.calculateOrderTotal(quantity: quantity, isFootlong: isFootlong);
+  }
+}
+
+class PricingRepository {
+  double calculateOrderTotal({required int quantity, required bool isFootlong}) {}
 }
