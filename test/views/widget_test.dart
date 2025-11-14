@@ -178,7 +178,7 @@ void main() {
       expect(find.text('0 white footlong sandwich(es): '), findsOneWidget);
       
       // Tap the Switch widget to toggle
-      await tester.tap(find.byType(Switch));
+      await tester.tap(find.byType(Switch).first); // Specify the first switch
       await tester.pump();
       
       // After toggle, should show six-inch
@@ -190,12 +190,12 @@ void main() {
       await tester.pumpWidget(const App());
       
       // First toggle: footlong → six-inch
-      await tester.tap(find.byType(Switch));
+      await tester.tap(find.byType(Switch).first); // Specify the first switch
       await tester.pump();
       expect(find.text('0 white six-inch sandwich(es): '), findsOneWidget);
       
       // Second toggle: six-inch → footlong
-      await tester.tap(find.byType(Switch));
+      await tester.tap(find.byType(Switch).first); // Specify the first switch
       await tester.pump();
       expect(find.text('0 white footlong sandwich(es): '), findsOneWidget);
     });
@@ -212,7 +212,7 @@ void main() {
       expect(find.text('3 white footlong sandwich(es): 🥪🥪🥪'), findsOneWidget);
       
       // Toggle size
-      await tester.tap(find.byType(Switch));
+      await tester.tap(find.byType(Switch).first); // Specify the first switch
       await tester.pump();
       
       // Quantity should remain 3, but size should change to six-inch
@@ -231,7 +231,7 @@ void main() {
       expect(find.text('0 wheat footlong sandwich(es): '), findsOneWidget);
       
       // Toggle size
-      await tester.tap(find.byType(Switch));
+      await tester.tap(find.byType(Switch).first); // Specify the first switch
       await tester.pump();
       
       // Bread type should remain wheat, size should change to six-inch
