@@ -61,12 +61,13 @@ void main() {
     testWidgets('changes bread type with DropdownMenu',
         (WidgetTester tester) async {
       await tester.pumpWidget(const App());
-      await tester.tap(find.byType(DropdownMenu<BreadType>));
+      await tester.pumpAndSettle(); // Ensure the app is fully rendered
+      await tester.tap(find.byType(DropdownMenu<BreadType>)); // Ensure DropdownButton is rendered
       await tester.pumpAndSettle();
       await tester.tap(find.text('wheat').last);
       await tester.pumpAndSettle();
       expect(find.textContaining('wheat footlong sandwich'), findsOneWidget);
-      await tester.tap(find.byType(DropdownMenu<BreadType>));
+      await tester.tap(find.byType(DropdownMenu<BreadType>)); // Ensure DropdownButton is rendered
       await tester.pumpAndSettle();
       await tester.tap(find.text('wholemeal').last);
       await tester.pumpAndSettle();
@@ -166,6 +167,75 @@ void main() {
       expect(
           find.text('1 wholemeal footlong sandwich(es): 🥪'), findsOneWidget);
       expect(find.text('Note: Lots of lettuce'), findsOneWidget);
+    });
+  });
+
+  group('OrderScreen - Size Toggle Switch', () {
+    testWidgets('toggles size from footlong to six-inch when Switch is tapped',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(const App());
+      // Initial state should show footlong
+      expect(find.text('0 white footlong sandwich(es): '), findsOneWidget);
+      
+      // Tap the Switch widget to toggle
+      await tester.tap(find.byType(Switch));
+      await tester.pump();
+      
+      // After toggle, should show six-inch
+      expect(find.text('0 white six-inch sandwich(es): '), findsOneWidget);
+    });
+
+    testWidgets('toggles size back to footlong on second tap',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(const App());
+      
+      // First toggle: footlong → six-inch
+      await tester.tap(find.byType(Switch));
+      await tester.pump();
+      expect(find.text('0 white six-inch sandwich(es): '), findsOneWidget);
+      
+      // Second toggle: six-inch → footlong
+      await tester.tap(find.byType(Switch));
+      await tester.pump();
+      expect(find.text('0 white footlong sandwich(es): '), findsOneWidget);
+    });
+
+    testWidgets('preserves quantity when toggling size',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(const App());
+      
+      // Add 3 sandwiches
+      for (int i = 0; i < 3; i++) {
+        await tester.tap(find.widgetWithText(ElevatedButton, 'Add'));
+        await tester.pump();
+      }
+      expect(find.text('3 white footlong sandwich(es): 🥪🥪🥪'), findsOneWidget);
+      
+      // Toggle size
+      await tester.tap(find.byType(Switch));
+      await tester.pump();
+      
+      // Quantity should remain 3, but size should change to six-inch
+      expect(find.text('3 white six-inch sandwich(es): 🥪🥪🥪'), findsOneWidget);
+    });
+
+    testWidgets('preserves bread type when toggling size',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(const App());
+      
+      // Change bread type to wheat
+      await tester.tap(find.byType(DropdownMenu<BreadType>)); // Ensure DropdownButton is rendered
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('wheat').last);
+      await tester.pumpAndSettle();
+      expect(find.text('0 wheat footlong sandwich(es): '), findsOneWidget);
+      
+      // Toggle size
+      await tester.tap(find.byType(Switch));
+      await tester.pump();
+      
+      // Bread type should remain wheat, size should change to six-inch
+      expect(find.text('0 wheat six-inch sandwich(es): '), findsOneWidget);
     });
   });
 }
