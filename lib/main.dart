@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sandwich_shop/repositories/order_repository.dart';
 import 'package:sandwich_shop/views/app_styles.dart';
+
 enum BreadType { white, wheat, wholemeal }
 
 void main() {
@@ -34,6 +35,7 @@ class _OrderScreenState extends State<OrderScreen> {
   late final OrderRepository _orderRepository;
   final TextEditingController _notesController = TextEditingController();
   bool _isFootlong = true;
+  bool _isToasted = false; // Fixed variable name
   BreadType _selectedBreadType = BreadType.white;
 
   @override
@@ -138,6 +140,19 @@ class _OrderScreenState extends State<OrderScreen> {
               dropdownMenuEntries: _buildDropdownEntries(),
             ),
             const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('untoasted', style: normalText),
+                Switch(
+                  value: _isToasted,
+                  onChanged: (value) {
+                    setState(() => _isToasted = value);
+                  },
+                ),
+                const Text('toasted', style: normalText),
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.all(40.0),
               child: TextField(
@@ -173,6 +188,7 @@ class _OrderScreenState extends State<OrderScreen> {
     );
   }
 }
+
 class StyledButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final IconData icon;
